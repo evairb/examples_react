@@ -1,38 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Produto from './Produto';
 
 const App = () => {
-  const [dados, setDados] = useState(null);
-  const [carregando, setCarregando] = useState(null);
+  const [produto, setProduto] = useState(null);
 
-  async function handleClick(event) {
-    setCarregando(true);
-    let produto = event.target.innerText;
-    let api = 'https://ranekapi.origamid.dev/json/api/produto/';
-    let busca = api + produto;
+  useEffect(() => {
+    const produtoLocal = window.localStorage.getItem('produto');
+    if (produtoLocal !== null) setProduto(produtoLocal);
+  }, []);
 
-    const response = await fetch(busca).then();
-    const json = await response.json();
-    setDados(json);
-    setCarregando(false);
+  useEffect(() => {
+    if (produto !== null) window.localStorage.setItem('produto', produto);
+  }, [produto]);
+
+  function handleClick({ target }) {
+    setProduto(target.innerText);
   }
 
   return (
     <div>
-      <button style={{ margin: '.5rem' }} onClick={handleClick}>
-        Notebook
+      <h1>Preferencia: {produto}</h1>
+      <button onClick={handleClick} style={{ marginRight: '1rem' }}>
+        notebook
       </button>
-      <button style={{ margin: '.5rem' }} onClick={handleClick}>
-        Smartphone
-      </button>
-      <button style={{ margin: '.5rem' }} onClick={handleClick}>
-        Tablet
-      </button>
-      {carregando && <p>Carregando...</p>}
-      {!carregando && dados && <Produto dados={dados} />}
+      <button onClick={handleClick}>smartphone</button>
+      <Produto produto={produto} />
     </div>
   );
 };
+
 export default App;
 // Os links abaixo puxam dados de um produto em formato JSON
 // https://ranekapi.origamid.dev/json/api/produto/tablet
