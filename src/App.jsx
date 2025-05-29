@@ -1,30 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import Produto from './Produto';
+import React, { useRef, useState } from 'react';
 
 const App = () => {
-  const [produto, setProduto] = useState(null);
+  const [comentarios, setComentarios] = useState([]);
+  const [input, setInput] = useState('');
+  const inputElement = useRef();
 
-  useEffect(() => {
-    const produtoLocal = window.localStorage.getItem('produto');
-    if (produtoLocal !== null) setProduto(produtoLocal);
-  }, []);
-
-  useEffect(() => {
-    if (produto !== null) window.localStorage.setItem('produto', produto);
-  }, [produto]);
-
-  function handleClick({ target }) {
-    setProduto(target.innerText);
+  function handleClick() {
+    setComentarios([...comentarios, input]);
+    setInput('');
+    inputElement.currentfocus();
   }
 
   return (
     <div>
-      <h1>Preferencia: {produto}</h1>
-      <button onClick={handleClick} style={{ marginRight: '1rem' }}>
-        notebook
-      </button>
-      <button onClick={handleClick}>smartphone</button>
-      <Produto produto={produto} />
+      <ul>
+        {comentarios.map(comentario => (
+          <li key={comentario}>{comentario}</li>
+        ))}
+      </ul>
+      <input
+        type='text'
+        ref={inputElement}
+        value={input}
+        onChange={({ target }) => setInput(target.value)}
+      />
+      <br />
+      <button onClick={handleClick}>Enviar</button>
     </div>
   );
 };
