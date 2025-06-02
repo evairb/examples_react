@@ -1,23 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 const App = () => {
-  const [carrinho, setCarrinho] = useState(0);
-  const [notificacao, setNotificacao] = useState(null);
-  const timeoutRef = useRef;
-  function handleClick() {
-    setCarrinho(carrinho + 1);
-    setNotificacao('Item adicionado ao carrinho');
-    setTimeout(() => {
-      setNotificacao(null);
-    }, 2000);
-  }
-
-  return (
-    <div>
-      <p>{notificacao}</p>
-      <button onClick={handleClick}>Adicionar Carrinho {carrinho}</button>
-    </div>
-  );
+  const [contar, setContar] = useState(0);
+  const valor = useMemo(() => {
+    const localItem = window.localStorage.getItem('produto');
+    console.log('Aconteceu o memo');
+    return localItem;
+  }, []);
+  console.log(valor);
+  return <button onClick={() => setContar(contar + 1)}>{contar}</button>;
 };
 
 export default App;
