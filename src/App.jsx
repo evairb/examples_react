@@ -1,14 +1,16 @@
 import React, { useMemo, useRef, useState } from 'react';
+import UserContext from './UserContext';
+import Produto from './Produto';
+import { GlobalStorage } from './GlobalContext';
+import Limpar from './Limpar';
 
 const App = () => {
-  const [contar, setContar] = useState(0);
-  const valor = useMemo(() => {
-    const localItem = window.localStorage.getItem('produto');
-    console.log('Aconteceu o memo');
-    return localItem;
-  }, []);
-  console.log(valor);
-  return <button onClick={() => setContar(contar + 1)}>{contar}</button>;
+  return (
+    <GlobalStorage>
+      <Produto />
+      <Limpar />
+    </GlobalStorage>
+  );
 };
 
 export default App;
