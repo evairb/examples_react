@@ -1,16 +1,40 @@
-import React, { useMemo, useRef, useState } from 'react';
-import UserContext from './UserContext';
-import Produto from './Produto';
-import { GlobalStorage } from './GlobalContext';
-import Limpar from './Limpar';
+import React from 'react';
+import useLocalStorage from './useLocalStorage';
+import useFetch from './useFetch';
 
 const App = () => {
-  return (
-    <GlobalStorage>
-      <Produto />
-      <Limpar />
-    </GlobalStorage>
-  );
+  const [produto, setProduto] = useLocalStorage('produto', '');
+  const { request, data, loading, error } = useFetch();
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const { response, json } = await request(
+        'https://ranekapi.origamid.dev/json/api/produto/',
+      );
+    }
+    fetchData();
+  }, [request]);
+
+  function handleClick({ target }) {
+    setProduto(target.innerText);
+  }
+  if (error) return <p>{error}</p>;
+  if (loading) return <p>Carregando...</p>;
+  if (data)
+    return (
+      <div>
+        <div>Produto: {produto}</div>
+        <button onClick={handleClick}>notebook</button>
+        <button onClick={handleClick}>smartphone</button>
+
+        {data.map(produto => (
+          <div key={produto.id}>
+            <button onClick={handleClick}>{produto.nome}</button>
+          </div>
+        ))}
+      </div>
+    );
+  else return null;
 };
 
 export default App;
