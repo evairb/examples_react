@@ -1,32 +1,35 @@
 import React from 'react';
 import Input from './Form/Input';
-import Select from './Form/Select';
-import Radio from './Form/Radio';
-import Checkbox from './Form/Checkbox';
+import useForm from './Hooks/useForm';
 
 const App = () => {
-  const [nome, setNome] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [produto, setProduto] = React.useState('');
-  const [cor, setCor] = React.useState('vermelho');
-  const [linguagem, setLinguagem] = React.useState('');
+  const cep = useForm('cep');
+  const email = useForm('email');
+  const nome = useForm();
+  const sobrenome = useForm(false);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (cep.validate() && email.validate() && nome.validate()) {
+      console.log('enviou');
+    } else {
+      console.log('Nao enviou');
+    }
+  }
 
   return (
-    <form>
-      <h2>Checkbox</h2>
-      <Checkbox
-        options={['JavaScript', 'PHP', 'Python']}
-        value={linguagem}
-        setValue={setLinguagem}
+    <form onSubmit={handleSubmit}>
+      <Input label='Nome' id='nome' type='text' {...nome} />
+      <Input label='Sobrenome' id='sobrenome' type='text' {...sobrenome} />
+      <Input
+        label='CEP'
+        id='cep'
+        type='text'
+        placeholder='00000-000'
+        {...cep}
       />
-      <Radio options={['azul', 'vermelho']} value={cor} setValue={setCor} />
-      <Select
-        options={['smartphone', 'tablet']}
-        value={produto}
-        setValue={setProduto}
-      />
-      <Input id='nome' label='Nome' value={nome} setValue={setNome} required />
-      <Input id='email' label='Email' value={email} setValue={setEmail} />
+      <Input label='Email' id='email' type='email' {...email} />
       <button>Enviar</button>
     </form>
   );
