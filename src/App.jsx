@@ -1,28 +1,21 @@
 import React from 'react';
-import Slide from './Slide';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './Home';
+import Sobre from './Sobre';
+import Header from './Header';
 
 const App = () => {
-  const slides = [
-    {
-      id: 'slide1',
-      text: 'Slide 1',
-    },
-    {
-      id: 'slide2',
-      text: 'Slide 2',
-    },
-    {
-      id: 'slide3',
-      text: 'Slide 3',
-    },
-  ];
-
   return (
-    <div>
-      <Slide slides={slides} />
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='sobre' element={<Sobre />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
+
 export default App;
 // Os links abaixo puxam dados de um produto em formato JSON
 // https://ranekapi.origamid.dev/json/api/produto/tablet
