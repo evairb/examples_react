@@ -1,18 +1,27 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './Home';
-import Sobre from './Sobre';
-import Header from './Header';
+import './App.css';
+import Produtos from './Components/Produtos';
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Contato from './Components/Contato';
+import Produto from './Components/Produto';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='sobre' element={<Sobre />} />
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <BrowserRouter className='App'>
+        <Header />
+        <div className='content'>
+          <Routes>
+            <Route path='/' element={<Produtos />} />
+            <Route path='produto/:id' element={<Produto />} />
+            <Route path='contato' element={<Contato />} />
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
+    </div>
   );
 };
 
